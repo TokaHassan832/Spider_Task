@@ -14,15 +14,18 @@ class TweetRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'tweet' => 'required|string|max:140'
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'tweet.required' => __('validation.required_tweet'),
+            'tweet.max' => __('validation.max_tweet'),
         ];
     }
 }

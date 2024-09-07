@@ -30,16 +30,16 @@ class UserFollowed extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->greeting('Hello ' . $notifiable->username . '!')
-            ->line($this->follower->username . ' has followed you.')
-            ->action('View Profile', url('/profile/' . $this->follower->id))
-            ->line('Thank you for using our application!');
+            ->greeting(__('notifications.hello', ['username' => $notifiable->username]))
+            ->line(__('notifications.user_followed', ['follower' => $this->follower->username]))
+            ->action(__('notifications.view_profile'), url('/profile/' . $this->follower->id))
+            ->line(__('notifications.thank_you'));
     }
 
     public function toBroadcast($notifiable)
     {
         return new BroadcastMessage([
-            'message' => $this->follower->username . ' has followed you!',
+            'message' => __('notifications.user_followed', ['follower' => $this->follower->username]),
         ]);
     }
 

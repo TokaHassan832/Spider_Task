@@ -17,20 +17,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware('Localization')->group(function () {
 
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+    Route::middleware('auth:sanctum')->group(function () {
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+        Route::post('tweets', [TweetController::class, 'create']);
+        Route::get('timeline', [TweetController::class, 'timeline']);
+        Route::post('follow/{user}', [FollowController::class, 'follow']);
 
-Route::middleware('auth:sanctum')->group(function () {
-
-    Route::post('tweets', [TweetController::class, 'create']);
-    Route::get('timeline', [TweetController::class, 'timeline']);
-    Route::post('follow/{user}', [FollowController::class, 'follow']);
+    });
 
 });
-

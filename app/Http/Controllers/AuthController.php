@@ -17,9 +17,9 @@ class AuthController extends Controller
     {
 
         $user = User::create([
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'username' => $request->validated('username'),
+            'email' => $request->validated('email'),
+            'password' => Hash::make($request->validated('password')),
         ]);
 
         if ($request->hasFile('image')) {
@@ -27,7 +27,9 @@ class AuthController extends Controller
             $user->save();
         }
 
-        return new UserResource($user);
+        return (new UserResource($user))->additional([
+            'message' => __('auth.register_success'),
+        ]);
     }
     public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
@@ -37,11 +39,12 @@ class AuthController extends Controller
             $token = $user->createToken('userToken')->plainTextToken;
             return response()->json([
                 'token' => $token,
-                'user' => new UserResource($user)
+                'user' => new UserResource($user),
+                'message' => __('auth.login_success'),
             ], 200);
         }
 
-        return response()->json(['error' => 'Invalid credentials'], 401);
+        return response()->json(['error' => __('auth.invalid_credentials')], 401);
     }
 
 }

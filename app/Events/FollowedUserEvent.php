@@ -30,6 +30,7 @@ class FollowedUserEvent
 
     public function broadcastWith()
     {
-        return ['message' => "{$this->follower} has followed you!"];
-    }
+        return [
+            'message' => __('notifications.user_followed', ['follower' => $this->follower->username]),
+        ];    }
 }

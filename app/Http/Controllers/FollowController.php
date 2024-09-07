@@ -6,20 +6,21 @@ use App\Events\FollowedUserEvent;
 use App\Models\User;
 use App\Notifications\UserFollowed;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 class FollowController extends Controller
 {
     public function follow(User $user): \Illuminate\Http\JsonResponse
     {
-        $follower = auth()->user();
+        $follower = Auth::user();
 
         if ($follower->id === $user->id) {
-            return response()->json(['error' => 'You cannot follow yourself.'], 403);
+            return response()->json(['error' =>  __('follow.cannot_follow_self')], 403);
         }
 
         if ($follower->isFollowing($user)) {
-            return response()->json(['error' => 'You are already following this user.'], 400);
+            return response()->json(['error' =>  __('follow.already_following')], 400);
         }
 
         $follower->follows()->attach($user->id);
@@ -29,6 +30,6 @@ class FollowController extends Controller
         event(new FollowedUserEvent($follower));
 
 
-        return response()->json(['message' => 'Successfully followed the user.'], 200);
+        return response()->json(['message' =>  __('follow.success_follow')], 200);
     }
 }

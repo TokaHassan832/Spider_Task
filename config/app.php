@@ -84,6 +84,7 @@ return [
     */
 
     'locale' => 'en',
+    'available_locales' => ['en', 'ar'],
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +169,7 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
     ])->toArray(),
 
     /*
