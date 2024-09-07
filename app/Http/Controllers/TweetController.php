@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class TweetController extends Controller
 {
-    public function create(TweetRequest $request) {
+    public function create(TweetRequest $request): TweetResource
+    {
         $tweet = Tweet::create([
             'user_id' => auth()->id(),
             'content' => $request->tweet,
@@ -18,7 +19,8 @@ class TweetController extends Controller
         return new TweetResource($tweet);
     }
 
-    public function timeline(Request $request) {
+    public function timeline(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
         $user = auth()->user();
 
         $followedUserIds = $user->follows()->pluck('followed_id');

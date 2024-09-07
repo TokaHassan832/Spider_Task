@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('tweets', [TweetController::class, 'create']);
     Route::get('timeline', [TweetController::class, 'timeline']);
-
     Route::post('follow/{user}', [FollowController::class, 'follow']);
+
 });
+
