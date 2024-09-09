@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('Localization')->group(function () {
 
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::middleware('throttle:10,1')->post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
 
     Route::middleware('auth:sanctum')->group(function () {

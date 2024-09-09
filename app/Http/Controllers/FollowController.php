@@ -8,6 +8,7 @@ use App\Notifications\UserFollowed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Queue;
 
 class FollowController extends Controller
 {
@@ -25,7 +26,9 @@ class FollowController extends Controller
 
         $follower->follows()->attach($user->id);
 
-        Notification::send($user, new UserFollowed($follower));
+        Queue::push(function () use ($user, $follower) {
+            Notification::send($user, new UserFollowed($follower));
+        });
 
         event(new FollowedUserEvent($follower));
 
